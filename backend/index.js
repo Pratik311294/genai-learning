@@ -36,34 +36,8 @@ await askGemini("What is the capital of France? Answer in one sentence.");
 //    Respond in 2 sentences.`
 // );
 
-// ----------------------------------
-// import dotenv from "dotenv";
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// dotenv.config();
-
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-// async function run() {
-//   try {
-//     const model = genAI.getGenerativeModel({
-//       // Updated to the current free-tier flash model
-//       model: "gemini-2.5-flash"
-//     });
-
-//     const result = await model.generateContent(
-//       "What is capital of karnataka?"
-//     );
-
-//     console.log(result.response.text());
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// }
-
-// run();
-
 // ---- Below code Openai model ----
+
 // import OpenAI from "openai";
 // import dotenv from "dotenv";
 
