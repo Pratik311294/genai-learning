@@ -66,12 +66,54 @@ async function chainOfThought() {
   const cotResult = await model.generateContent(cotPrompt);
   printResponse("Chain of Thought", cotPrompt, cotResult.response.text());
 }
+
+// ── TECHNIQUE 4: Structured JSON output ──────────────────────────────
+
+async function structuredOutput() {
+  console.log("\n\n🔬 EXPERIMENT 4: Structured JSON output");
+
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+  const prompt = `Analyze this employee feedback and respond ONLY with valid JSON.
+No explanation, no markdown, no backticks — just raw JSON.
+
+Feedback: "John is great at solving problems and always meets deadlines. 
+However, he struggles with communication during team meetings and sometimes 
+misses the bigger picture when focused on technical details."
+
+JSON format:
+{
+  "strengths": ["..."],
+  "improvements": ["..."],
+  "overall_rating": "excellent|good|average|poor",
+  "summary": "one sentence"
+}`;
+
+  const result = await model.generateContent(prompt);
+  const rawResponse = result.response.text();
+  
+  printResponse("Structured JSON", prompt, rawResponse);
+
+  // Try to parse it — this is what your app would do
+  try {
+    const parsed = JSON.parse(rawResponse.trim());
+    console.log("\n✅ Successfully parsed JSON:");
+    console.log("  Strengths:", parsed.strengths);
+    console.log("  Improvements:", parsed.improvements);
+    console.log("  Rating:", parsed.overall_rating);
+  } catch (e) {
+    console.log("\n❌ JSON parse failed — model added extra text");
+    console.log("Raw output was:", rawResponse);
+  }
+}
 async function main(){
     // console.log("Running Zero-shot vs Few-shot example...");
     // await zerovsFewShot();
     // console.log("Running Role-based example...");
     // await roleBased();
-    console.log("Running Chain of Thought example...");
-    await chainOfThought();
+    // console.log("Running Chain of Thought example...");
+    // await chainOfThought();
+    console.log("Running Structured JSON output example...");
+    await structuredOutput();
 }
 main();
