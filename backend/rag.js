@@ -109,9 +109,9 @@ async function main() {
 
   // Test with 3 different questions
   const questions = [
-    "How many days of paid leave do employees get?",
-    "Can I work from home every day?",
-    "When do performance reviews happen?",
+    // "How many days of paid leave do employees get?",
+    // "Can I work from home every day?",
+    "whats the rating scale?",
   ];
 
   for (const question of questions) {
