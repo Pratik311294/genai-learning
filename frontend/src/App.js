@@ -33,7 +33,16 @@ export default function App() {
       const data = await response.json();
 
       const reply = data.reply || "Error: No reply received";
-      setMessages([...updatedMessages, { role: "assistant", text: reply }]);
+      setMessages([
+        // Update last user message with classification
+        ...updatedMessages.slice(0, -1),
+        {
+          ...updatedMessages[updatedMessages.length - 1],
+          classification: data.classification,
+        },
+        // Add assistant reply
+        { role: "assistant", text: reply },
+      ]);
     } catch (error) {
       console.error("Fetch error:", error);
       setMessages([
@@ -65,12 +74,18 @@ export default function App() {
         {messages.map((msg, i) => (
           <div key={i} className={`bubble ${msg.role}`}>
             <strong>{msg.role === "user" ? "You" : "AI"}:</strong> {msg.text}
+            {/* Show classification badge on user messages */}
+            {msg.role === "user" && msg.classification && (
+              <div style={{ marginTop: "6px", fontSize: "11px", opacity: 0.7 }}>
+                🎯 {msg.classification.intent} | 😶{" "}
+                {msg.classification.sentiment} | 📊{" "}
+                {(msg.classification.confidence * 100).toFixed(0)}%
+              </div>
+            )}
           </div>
         ))}
 
-        {loading && (
-          <div className="bubble thinking">AI is thinking...</div>
-        )}
+        {loading && <div className="bubble thinking">AI is thinking...</div>}
 
         {/* invisible div to scroll to */}
         <div ref={bottomRef} />
